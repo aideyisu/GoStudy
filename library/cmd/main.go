@@ -2,12 +2,25 @@ package main
 
 import (
   "fmt"
+
+  "greetings"
+  bs "booksystem"
 )
 
 func main(){
-  var LibraryName string 
-  LibraryName = "伊苏"
-  message := fmt.Sprintf("这里是%v图书管理系统", LibraryName)
+  LibraryName := "荒谷遗精图书馆"
+  UserName := "国服增幅王"
+  BookName := "增幅的秘密"
+
+  bs.Init()
+
+  message2 := greetings.Hello(UserName)
+  fmt.Println(message2)
+
+  message := greetings.ComeLibrary(LibraryName)
   fmt.Println(message)
+
+  bs.AddBook(BookName)
+  bs.BorrowBook(BookName, UserName, 3)
 }
 
