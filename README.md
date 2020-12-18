@@ -11,7 +11,7 @@ to study go.....
 
 参考文档
 
-https://github.com/golang-standards/project-layout/blob/master/README_zh.md
+https://github.com/golang-standards/project-layout/blob/master/README_zh.md#你不应该拥有的目录
 
 #### hello 
 
