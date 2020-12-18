@@ -8,11 +8,11 @@ import (
 )
 
 func main(){
-  LibraryName := "荒谷遗精图书馆"
-  UserName := "国服增幅王"
-  BookName := "增幅的秘密"
+  LibraryName := "酥酥小黑共同守护的图书馆"
+  UserName := "蜜桃芙"
+  BookName := "大货车的秘密"
 
-  bs.Init()
+  BS := bs.Init()
 
   message2 := greetings.Hello(UserName)
   fmt.Println(message2)
@@ -20,7 +20,18 @@ func main(){
   message := greetings.ComeLibrary(LibraryName)
   fmt.Println(message)
 
-  bs.AddBook(BookName)
-  bs.BorrowBook(BookName, UserName, 3)
+  BS, ER := bs.AddBook(BS, BookName, "AABB")
+  if ER != nil {
+    fmt.Println("入库失败请查看原因")
+  }
+  fmt.Println(BS)
+
+
+  BS, ER = bs.BorrowBook(BS, BookName, "aideyisu")
+
+  if ER != nil {
+    fmt.Println("入库失败请查看原因")
+  }
+  fmt.Println(BS)
 }
 
