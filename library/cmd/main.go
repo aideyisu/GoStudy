@@ -14,13 +14,10 @@ func main(){
 
   BS := bs.Init()
 
-  message2 := greetings.Hello(UserName)
-  fmt.Println(message2)
-
-  message := greetings.ComeLibrary(LibraryName)
+  message := greetings.Hello(UserName, LibraryName)
   fmt.Println(message)
 
-  BS, ER := bs.AddBook(BS, BookName, "AABB")
+  BS, ER := bs.AddBook(BS, BookName, "旭旭宝宝")
   if ER != nil {
     fmt.Println("入库失败请查看原因")
   }
@@ -30,7 +27,7 @@ func main(){
   BS, ER = bs.BorrowBook(BS, BookName, "aideyisu")
 
   if ER != nil {
-    fmt.Println("入库失败请查看原因")
+    fmt.Println("借阅失败请查看原因")
   }
   fmt.Println(BS)
 }

@@ -1,18 +1,14 @@
 package booksystem
 
-
 import "fmt"
 
-
 type OneBook struct{
-  // PublicTime string
   Auther string 
   CB bool
   Borrower string
 }
 
 
-// func AddBook(LibrarySystem map[string]OneBook,BookName string, PublicTime string, Auther string) (map[string]OneBook, error) {
 func AddBook(LibrarySystem map[string]OneBook,BookName string, Auther string) (map[string]OneBook, error) {
   _, ok := LibrarySystem["BookName"]
   if ok == true{ // 冲突检测
@@ -21,7 +17,6 @@ func AddBook(LibrarySystem map[string]OneBook,BookName string, Auther string) (m
   }
 
   var NewBook OneBook
-  // NewBook.PublicTime = PublicTime
   NewBook.Auther = Auther
   NewBook.CB = true
 
