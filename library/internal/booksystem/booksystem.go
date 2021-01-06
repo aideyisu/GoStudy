@@ -11,7 +11,7 @@ type OneBook struct{
 
 func AddBook(LibrarySystem map[string]OneBook,BookName string, Auther string) (map[string]OneBook, error) {
   _, ok := LibrarySystem["BookName"]
-  if ok == true{ // 冲突检测
+  if ok == true{ 
     fmt.Printf("这本书已经存在")
     return LibrarySystem, nil // 这里不应该是nil,确认下错误报错格式再来写
   }
@@ -41,6 +41,23 @@ func BorrowBook(LibrarySystem map[string]OneBook, BookName string, Borrower stri
   
   LibrarySystem[BookName] = BBook
   // fmt.Printf("借阅书籍 %v-%v-%v \n", BookName, Borrower, TimeLength)
+  return LibrarySystem, nil
+}
+
+func ReBook(LibrarySystem map[string]OneBook, BookName string)(map[string]OneBook, error) {
+  _, ok := LibrarySystem[BookName]
+  if ok == false{
+    fmt.Printf("此书不存在")
+    return LibrarySystem, nil // 这里不应该是nil,确认下错误报错格式再来写
+  }
+  if LibrarySystem[BookName].CB == true {
+    fmt.Printf("此书在书库中,无需归还")
+    return LibrarySystem, nil // 这里不应该是nil,确认下错误报错格式再来写
+  }
+  BBook := LibrarySystem[BookName]
+  BBook.CB = true
+
+  LibrarySystem[BookName] = BBook
   return LibrarySystem, nil
 }
 
