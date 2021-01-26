@@ -1,45 +1,44 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
 	"net"
 )
 
 func main() {
-	go OneServer("localhost:50000")
-	go OneServer("localhost:50001")
-	select {}
-}
-
-func OneServer(Addr string) {
-	fmt.Println("Starting the server ...")
-	// 创建 listener
-	listener, err := net.Listen("tcp", Addr)
+	fmt.Println("hello")
+	listen, err := net.Listen("tcp", "127.0.0.1:10000")
 	if err != nil {
-		fmt.Println("Error listening", err.Error())
-		return //终止程序
+		log.Fatalf("listen error: %v\n", err)
 	}
-	// 监听并接受来自客户端的连接
 	for {
-		conn, err := listener.Accept()
+		conn, err := listen.Accept()
 		if err != nil {
-			fmt.Println("Error accepting", err.Error())
-			return // 终止程序
+			log.Printf("accept error: %v\n", err)
+			continue
 		}
-		go doServerStuff(conn)
+		// 开始goroutine监听连接
+		go handleConn(conn)
 	}
-
 }
 
-// 用来读取链接中消息
-func doServerStuff(conn net.Conn) {
+// 处理一个链接
+func handleConn(conn net.Conn) {
+	defer conn.Close()
+	// 读写缓冲区
+	rd := bufio.NewReader(conn)
+	wr := bufio.NewWriter(conn)
 	for {
-		buf := make([]byte, 512)
-		len, err := conn.Read(buf)
+		line, _, err := rd.ReadLine()
+		fmt.Println(line)
 		if err != nil {
-			fmt.Println("Error reading", err.Error())
-			return //终止程序
+			log.Printf("read error: %v\n", err)
+			return
 		}
-		fmt.Printf("Received data: %v\n", string(buf[:len]))
+		wr.WriteString("hello ")
+		wr.Write(line)
+		wr.Flush() // 一次性syscall
 	}
 }
