@@ -26,28 +26,45 @@ func main() {
 	clientName, _ := inputReader.ReadString('\n')
 	// fmt.Printf("CLIENTNAME %s", clientName)
 	trimmedClient := strings.Trim(clientName, "\r\n") // Windows 平台下用 "\r\n"，Linux平台下使用 "\n"
-
+	go receive(conn)
 	// 给服务器发送信息直到程序退出：
-	for {
-		fmt.Println("What to send to the server? Type Q to quit.")
-		input, _ := inputReader.ReadString('\n')
-		trimmedInput := strings.Trim(input, "\r\n")
-		// fmt.Printf("input:--%s--", input)
-		// fmt.Printf("trimmedInput:--%s--", trimmedInput)
-		if trimmedInput == "Q" {
-			return
-		}
-		wr.Write([]byte(trimmedClient + " says: " + trimmedInput + "\n"))
-		wr.Flush()
-		var str string = ""
+	go func() {
+		for {
+			fmt.Println("What to send to the server? Type Q to quit.")
+			input, _ := inputReader.ReadString('\n')
+			trimmedInput := strings.Trim(input, "\r\n")
+			// fmt.Printf("input:--%s--", input)
+			// fmt.Printf("trimmedInput:--%s--", trimmedInput)
+			if trimmedInput == "Q" {
+				return
+			}
+			wr.Write([]byte(trimmedClient + " says: " + trimmedInput + "\n"))
+			wr.Flush()
 
-		var S []byte = []byte(str)
-		line, err := rd.Read(S)
+			// var str string = ""
+			// var S []byte = []byte(str)
+			// line, err := rd.Read(S)
+			// if err != nil {
+			// 	log.Printf("err ! %v", err)
+			// 	return
+			// }
+			// fmt.Println(line, S)
+			// _, err = conn.Write([]byte(trimmedClient + " says: " + trimmedInput))
+		}
+	}()
+	select {}
+}
+
+func receive(conn net.Conn) {
+	// 缓冲区
+	rd := bufio.NewReader(conn)
+	for {
+		line, _, err := rd.ReadLine()
+		defer fmt.Println(line)
+		fmt.Println(line)
 		if err != nil {
-			log.Printf("err ! %v", err)
+			log.Printf("read error: %v\n", err)
 			return
 		}
-		fmt.Println(line, S)
-		// _, err = conn.Write([]byte(trimmedClient + " says: " + trimmedInput))
 	}
 }
